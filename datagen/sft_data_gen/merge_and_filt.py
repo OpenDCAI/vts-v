@@ -1,5 +1,5 @@
 import json
-
+import argparse
 import os
 from tqdm import tqdm
 
@@ -11,6 +11,8 @@ def check_only_one_step(train_data: dict):
 
 
 def merge_and_filter(input_dir, output_dir):
+    seen_ids = set()
+    merged_data = []
     for file_name in tqdm(os.listdir(input_dir), desc="Processing json file: ", position=0):
         if file_name.endswith(".json"):
             file_path = os.path.join(input_dir, file_name)
@@ -26,17 +28,14 @@ def merge_and_filter(input_dir, output_dir):
 
 
                 if identifier not in seen_ids and is_correct and image_placeholders_equal and images_or_messages_not_empty and imagepaths_exist and not only_one_step:
-                    total_count += 1
-                    merged_data.append(data)
+                    merged_data.append(data["sft_train_data"])
                     seen_ids.add(identifier)
-                else:
-                    duplicated_count += 1
-
-
-
-
-
-
+    output_file_path = os.path.join(output_dir, "llavaov_sft_train.json")
+    print(f"Total Count: {len(merged_data)}")
+    with open(output_file_path, "w") as f:
+        json.dump(merged_data, f, indent=4)
+    
+    return len(merged_data)
 
 
 if __name__ == "__main__":
@@ -44,3 +43,5 @@ if __name__ == "__main__":
     parser.add_argument("--input_dir", required=True, help="Root directory containing task directories")
     parser.add_argument("--output_dir", required=True, help="Final output JSON file path")
     args = parser.parse_args()
+
+    merge_and_filter(args.input_dir, args.output_dir)

@@ -81,7 +81,7 @@ def transform_to_llama_factory_sft_format(original_entry: Dict[str, Any]) -> Dic
     # Process chosen response's message_list for assistant and follow-up messages
     message_list = original_entry.get("traces", {}).get("message_list", [])
     
-    for msg in message_list[1:]:  # Skip the first system message
+    for msg in message_list[2:]:  # Skip the first system message
         if msg["role"] == "assistant":
             transformed["messages"].append({
                 "role": "assistant",

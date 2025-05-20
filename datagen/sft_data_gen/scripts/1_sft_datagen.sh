@@ -14,15 +14,6 @@ python $SCRIPTS \
     --model_name $MODEL_PATH \
     --model_port $MODEL_PROT \
     --worker_id 0 \
-    --num_workers 2 &
-python $SCRIPTS \
-    --input_dir $INPUT_DIR \
-    --output_dir $OUTPUT_DIR \
-    --model_name $MODEL_PATH \
-    --model_port $MODEL_PROT \
-    --worker_id 1 \
-    --num_workers 2 &
-
-wait
+    --num_workers 1
 
 echo "All worker Done!"
