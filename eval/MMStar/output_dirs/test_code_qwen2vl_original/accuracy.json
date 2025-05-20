@@ -1,0 +1,11 @@
+[
+    {
+        "accuracy count": 0,
+        "len of dataset": 5,
+        "test accuracy": "0.0%",
+        "skipped count": 0,
+        "error log": "/fs-computility/llmit_d/shared/baitianyi/vts_v/eval/MMStar/output_dirs/test_code_qwen2vl_original/errors_mmstar.log",
+        "previously processed": 0,
+        "newly processed": 5
+    }
+]

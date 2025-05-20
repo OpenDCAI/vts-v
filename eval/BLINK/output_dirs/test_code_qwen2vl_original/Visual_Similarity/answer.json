@@ -1,0 +1,35 @@
+{
+    "val": [
+        {
+            "idx": "val_Visual_Similarity_1",
+            "answer": "(A)",
+            "full_prediction": "The second image is most similar to the first one.",
+            "prediction": "(A)"
+        },
+        {
+            "idx": "val_Visual_Similarity_2",
+            "answer": "(A)",
+            "full_prediction": "B",
+            "prediction": "(B)"
+        },
+        {
+            "idx": "val_Visual_Similarity_3",
+            "answer": "(A)",
+            "full_prediction": "B",
+            "prediction": "(B)"
+        },
+        {
+            "idx": "val_Visual_Similarity_4",
+            "answer": "(A)",
+            "full_prediction": "The third image is most similar to the first image.",
+            "prediction": "(B)"
+        },
+        {
+            "idx": "val_Visual_Similarity_5",
+            "answer": "(B)",
+            "full_prediction": "The third image is most similar to the first one.",
+            "prediction": "(B)"
+        }
+    ],
+    "test": []
+}
