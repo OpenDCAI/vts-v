@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set your own model path here
+# set your own model path
 MODEL_PATH=your_model_path_here
 
 # set your own port
