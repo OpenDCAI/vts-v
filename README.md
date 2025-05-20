@@ -2,7 +2,11 @@
 
 This repository is the official implementation of [Multi-step Visual Reasoning with Visual Tokens Scaling and Verification]
 
-## Requirements
+# Introduction
+
+<img src="./asset/1.png" alt="PDF预览"/>
+
+# Requirements
 
 To install requirements:
 
@@ -14,7 +18,7 @@ pip install -r requirements.txt
 
 
 
-## Evaluation
+# Quick Start
 
 ### Step-1: Launch model deployment
 
@@ -49,7 +53,17 @@ MODEL_PORT=28080
 
 Currently, our supported benchmarks for testing include [BLINK](https://huggingface.co/datasets/BLINK-Benchmark/BLINK), [MathVista](https://huggingface.co/datasets/AI4Math/MathVista), [MMStar](https://huggingface.co/datasets/Lin-Chen/MMStar), and [Vstar](https://huggingface.co/datasets/craigwu/vstar_bench).
 
-Our method operates in three modes: Direct, VTS, and VTS-V.
+
+You can find the scripts to run our method in the [`eval/BLINK/scripts`](./eval/BLINK/scripts/), [`eval/MathVista/scripts`](./eval/MathVista/scripts/), [`eval/MMStar/scripts`](./eval/MMStar/scripts/), [`eval/Vstar/scripts`](./eval/Vstar/scripts/) folders.
+
+Our method operates in three modes: **Direct**, **VTS**, and **VTS-V**.In these scripts, different operation modes can be configured by setting corresponding command-line arguments. The specific modes and parameter settings are detailed in the following table:
+| Mode | using_vts | using_verifier | 
+|------| --------- |----------------| 
+|Direct| False     |   False        | 
+|VTS   | True      |   False        |
+|VTS-V | True      |   True         |
+
+
 
 By default, we use `Qwen-max` as the LLM-as-a-judge evaluation model. You can utilize any OpenAI-API-compatible model by configuring the corresponding base-url, api-key, and model-name parameters. However, please refrain from modifying the variable names `DASHSCOPE_BASE_URL`, `DASHSCOPE_API_KEY`, and `DASHSCOPE_MODEL`.
 ```
@@ -82,17 +96,6 @@ export DASHSCOPE_MODEL="qwen-max"
 
 
 ## Training
-
-To train the model(s) in the paper, run this command:
-
-```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
-```
-
->📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
-
-
-## Results
 
 
 ## Contributing
