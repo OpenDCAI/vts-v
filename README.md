@@ -197,5 +197,3 @@ In our work, we constructed a 315K SFT dataset and a 301K DPO dataset by samplin
 # Training
 
 In this work, we conducted supervised fine-tuning (SFT) using our custom-built VTS-SFT dataset on three models: [Qwen2.5VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct), [Qwen2VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct), and [LLaMA-3.2-11B-Vision-Instruct](https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct). Additionally, we performed DPO training on [Qwen2.5VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) using our constructed VTS-DPO dataset. For detailed methodology, please refer to [train/README.md](./train/README.md):
-
-# Contributing
