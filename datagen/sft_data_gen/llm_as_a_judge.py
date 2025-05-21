@@ -5,10 +5,6 @@ import matplotlib.pyplot as plt
 from openai import OpenAI
 import time
 
-# Configuration
-QWENVL_MODEL_PATH = "/fs-computility/llmit_d/shared/baitianyi/model/Qwen2.5-VL-72B-Instruct"
-QWENVL_USING_PORT = 28082
-
 
 def build_prompt(question, gold_answer, prediction):
     prompt_template = """

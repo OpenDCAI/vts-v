@@ -6,8 +6,15 @@ export DISABLE_VERSION_CHECK=1
 
 CUDA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
 
+
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+TRAIN_DIR=$(dirname $(dirname "$SCRIPT_DIR"))
+
+
+
 # 设置日志文件
-LOG_FILE="/fs-computility/llmit_d/shared/baitianyi/vts_v/train/sft/train_scripts/logs/qwen25vl/qwen25vl_training_$(date +%Y%m%d_%H%M%S).log"
+LOG_FILE="$TRAIN_DIR/sft/train_scripts/logs/qwen25vl/qwen25vl_training_$(date +%Y%m%d_%H%M%S).log"
 
 
 # 重定向所有输出（标准输出和错误输出）到日志文件
@@ -20,12 +27,16 @@ cd /fs-computility/llmit_d/shared/baitianyi/vts/train/sft/llamafactory/LLaMA-Fac
 source /fs-computility/llmit_d/shared/baitianyi/miniconda3/bin/activate /fs-computility/llmit_d/shared/baitianyi/miniconda3/envs/hzj_llamafactory2
 
 
-# 设置输出目录
-OUTPUT_DIR="/fs-computility/llmit_d/shared/baitianyi/vts_v/train/sft/LLaMA-Factory/saves/Qwen25VL_7B_Instruct/lora"
+## TODO
+# You should set your own model path 
+MODEL_NAME_OR_PATH=your-own-model-name-or-path
 
-MODEL_NAME_OR_PATH=/fs-computility/llmit_d/shared/baitianyi/vts/train/dpo/model/Qwen2.5-VL-7B-Instruct
-LLAMAFACTORY_DATA_DIR=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/sft/LLaMA-Factory/data
-DEEPSPEED_CONFIG_PATH=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/sft/LLaMA-Factory/cache/ds_z3_config.json
+
+
+# 设置输出目录
+OUTPUT_DIR="$TRAIN_DIR/sft/LLaMA-Factory/saves/Qwen25VL_7B_Instruct/lora"
+LLAMAFACTORY_DATA_DIR=$TRAIN_DIR/sft/LLaMA-Factory/data
+DEEPSPEED_CONFIG_PATH=$TRAIN_DIR/sft/LLaMA-Factory/cache/ds_z3_config.json
 
 
 CMD="llamafactory-cli train \

@@ -2,8 +2,14 @@
 
 cd ../
 
+
 QWEN_PATH="/fs-computility/llmit_d/shared/baitianyi/model/Qwen2.5-VL-72B-Instruct"
 QWEN_PORT=28080
+
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+VTS_INFERENCE_DIR=$(dirname "$SCRIPT_DIR")
+
 
 TASK_NAME="figureqa(cauldron,llava_format)"
 

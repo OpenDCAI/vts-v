@@ -1,22 +1,25 @@
 #!/bin/bash
 
 
-
-# export WANDB_API_KEY=[your wandb_api_key here]
-export WANDB_API_KEY=34a4634ba3972e92e7a2e6115c90f604708f06e3
-
-CONFIG_FILE=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/dpo/config/zero3_dpo_8.yaml
-
-SCRIPTS=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/dpo/trl_dpo_train.py
-
-DATASET_NAME_OR_PATH=/fs-computility/llmit_d/shared/baitianyi/vts_v/datagen/dpo_data_gen/output_dirs/data_filter_by_tokens_output_dirs/llavaov_dpo_train_merged_less_than_10000_12.json
-# DATASET_NAME_OR_PATH=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/dpo/data/old_select_1000.json
-MODEL_NAME_OR_PATH=/fs-computility/llmit_d/shared/baitianyi/vts/train/dpo/model/Qwen2.5-VL-7B-Instruct
-OUTPUT_DIR=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/dpo/output_dirs
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+TRAIN_DIR=$(dirname $(dirname "$SCRIPT_DIR"))
 
 
-accelerate launch --config_file /fs-computility/llmit_d/shared/baitianyi/vts_v/train/dpo/config/zero3_dpo_8.yaml \
-    /fs-computility/llmit_d/shared/baitianyi/vts/train/dpo/trl_dpo_vlm.py \
+
+CONFIG_FILE=$TRAIN_DIR/dpo/config/zero3_dpo_8.yaml
+SCRIPTS=$TRAIN_DIR/dpo/trl_dpo_train.py
+OUTPUT_DIR=$TRAIN_DIR/dpo/output_dirs
+
+
+## TODO: you should specify you own dataset and model path
+DATASET_NAME_OR_PATH=your-dataset-path
+MODEL_NAME_OR_PATH=your-model-path
+
+
+
+
+accelerate launch --config_file $CONFIG_FILE \
+    $SCRIPTS\
     --dataset_name $DATASET_NAME_OR_PATH \
     --model_name_or_path $MODEL_NAME_OR_PATH \
     --output_dir $OUTPUT_DIR \
@@ -32,5 +35,3 @@ accelerate launch --config_file /fs-computility/llmit_d/shared/baitianyi/vts_v/t
     --gradient_checkpointing True \
     --ddp_timeout 180000000 \
     --warmup_ratio 0.03 \
-    --report_to wandb \
-    --run_name test_code_dpo

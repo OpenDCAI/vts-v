@@ -5,10 +5,15 @@
 export DISABLE_VERSION_CHECK=1
 
 
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+TRAIN_DIR=$(dirname $(dirname "$SCRIPT_DIR"))
+
+
+
 CUDA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
 
 
-LOG_FILE="/fs-computility/llmit_d/shared/baitianyi/vts/train/sft/scripts/llama_vision/log/training_$(date +%Y%m%d_%H%M%S).log"
+LOG_FILE="$TRAIN_DIR/sft/scripts/llama_vision/log/training_$(date +%Y%m%d_%H%M%S).log"
 
 # 重定向所有输出（标准输出和错误输出）到日志文件
 exec > >(tee -a "$LOG_FILE") 2>&1
@@ -17,12 +22,17 @@ echo "开始训练，日志保存到: $LOG_FILE"
 echo "执行时间: $(date)"
 
 
-OUTPUT_DIR="/fs-computility/llmit_d/shared/baitianyi/vts_v/train/sft/LLaMA-Factory/saves/LLaMA_3_2_Vision_Instruct_11B/lora"
+## TODO
+# You should set your own model path 
+MODEL_NAME_OR_PATH=your-own-model-name-or-path
 
 
-MODEL_NAME_OR_PATH=/fs-computility/llmit_d/shared/baitianyi/dl/unsloth/Llama-3.2-11B-Vision-Instruct
-LLAMAFACTORY_DATA_DIR=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/sft/LLaMA-Factory/data
-DEEPSPEED_CONFIG_PATH=/fs-computility/llmit_d/shared/baitianyi/vts_v/train/sft/LLaMA-Factory/cache/ds_z3_config.json
+
+
+OUTPUT_DIR="$TRAIN_DIR/sft/LLaMA-Factory/saves/LLaMA_3_2_Vision_Instruct_11B/lora"
+
+LLAMAFACTORY_DATA_DIR=$TRAIN_DIR/sft/LLaMA-Factory/data
+DEEPSPEED_CONFIG_PATH=$TRAIN_DIR/sft/LLaMA-Factory/cache/ds_z3_config.json
 
 
 
