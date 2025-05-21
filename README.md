@@ -104,23 +104,27 @@ Next, we will use BLINK as an example to demonstrate how to run the three differ
 
 ### GPT-4o
 
-For Direct mode, you can run the script [gpt_blink_direct.sh](./eval/BLINK/scripts/gpt_blink_direct.sh).
-
 You should configure your own GPT-4o API base URL and API key in the script.
 ```bash
 ## Set your own gpt-4o api base-url and api-key here
 export OPENAI_BASE_URL=https://api.openai.com/v1 # default value
 export OPENAI_API_KEY=your-openai-api-key-here
 ```
+And you need to specify your own Qwen-Max's base URL, API key, and model name:
+```bash
+export DASHSCOPE_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
+export DASHSCOPE_API_KEY=your_dashscope_api_key
+export DASHSCOPE_MODEL="qwen-max"
+```
 
-Then run the following command in the terminal:
+For Direct mode, you can run the script [gpt_blink_direct.sh](./eval/BLINK/scripts/gpt_blink_direct.sh):
 ```bash
 cd eval/BLINK/scripts
 bash gpt_blink_direct.sh
 ```
 
 
-For VTS mode, you can run the script [gpt_blink_vts.sh](./eval/BLINK/scripts/gpt_blink_vts.sh).
+For VTS mode, you can run the script [gpt_blink_vts.sh](./eval/BLINK/scripts/gpt_blink_vts.sh):
 ```bash
 cd eval/BLINK/scripts
 bash gpt_blink_vts.sh
@@ -128,9 +132,10 @@ bash gpt_blink_vts.sh
 
 For VTS-V mode, you can run the script [gpt_blink_vts_v.sh](./eval/BLINK/scripts/gpt_blink_vts_v.sh).
 
-In VTS-V mode, you need to specify the verifier model by setting:
+In VTS-V mode, you need to specify the verifier model by the following settings in [gpt_blink_vts_v.sh](./eval/BLINK/scripts/gpt_blink_vts_v.sh):
 - `DPO_MODEL_PATH` to the DPO-trained Qwen2.5-VL-7B-Instruct model used in our method
 - `REF_MODEL_PATH` to the original Qwen2.5-VL-7B-Instruct model
+
 ```bash
 # set dpo model path and ref model path
 DPO_MODEL_PATH=your_own_dpo_model_path_here
@@ -144,15 +149,53 @@ bash gpt_blink_vts_v.sh
 ```
 
 ### Qwen2.5-VL-7B-Instruct
+You can use either the original [Qwen2.5-VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) model or our fine-tuned version.
 
+First, you need to launch the Qwen2.5-VL model using vLLM as described in [Step-1: Launch model deployment](#step-1-launch-model-deployment).
 
+Then, you must set the `MODEL_PATH` and `MODEL_PORT` parameters in the test scripts to exactly match your vLLM configuration, otherwise there will be runtime errors.
+```bash
+# Set your own model path and port here
+MODEL_PATH=your_model_path_here
+MODEL_PORT=28080
+```
 
-## Data Construction
+For Diect mode, you can run the script [qwen25vl_blink_direct.sh](./eval/BLINK/scripts/qwen25vl_blink_direct.sh):
+```bash
+cd eval/BLINK/scripts
+bash qwen25vl_blink_direct.sh
+```
 
+For VTS mode, you can run the script [qwen25vl_blink_vts.sh](./eval/BLINK/scripts/qwen25vl_blink_vts.sh):
+```bash
+cd eval/BLINK/scripts
+bash qwen25vl_blink_vts.sh
+```
 
+For VTS-V mode, you can run the script [qwen25vl_blink_vts_v.sh](./eval/BLINK/scripts/qwen25vl_blink_vts_v.sh):
 
+In VTS-V mode, you need to specify the verifier model by the following settings in [qwen25vl_blink_vts_v.sh](./eval/BLINK/scripts/qwen25vl_blink_vts_v.sh):
+- `DPO_MODEL_PATH` to the DPO-trained Qwen2.5-VL-7B-Instruct model used in our method
+- `REF_MODEL_PATH` to the original Qwen2.5-VL-7B-Instruct model
 
-## Training
+```bash
+# set dpo model path and ref model path
+DPO_MODEL_PATH=your_own_dpo_model_path_here
+REF_MODEL_PATH=your_own_ref_model_path_here
+```
 
+Then run the following command in the terminal:
+```bash
+cd eval/BLINK/scripts
+bash qwen25vl_blink_vts_v.sh
+```
 
-## Contributing
+# Dataset Construction
+
+In our work, we constructed a 315K SFT dataset and a 301K DPO dataset by sampling from [LLaVa-OneVision-Data](https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data). For detailed dataset construction methodology, please refer to [datagen/README.md](./datagen/README.md)
+
+# Training
+
+In this work, we conducted supervised fine-tuning (SFT) using our custom-built VTS-SFT dataset on three models: [Qwen2.5VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct), [Qwen2VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct), and [LLaMA-3.2-11B-Vision-Instruct](https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct). Additionally, we performed DPO training on [Qwen2.5VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) using our constructed VTS-DPO dataset. For detailed methodology, please refer to [train/README.md](./train/README.md):
+
+# Contributing
