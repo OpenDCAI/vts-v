@@ -26,8 +26,8 @@ OUTPUT_DIR="/fs-computility/llmit_d/shared/baitianyi/vts_v/eval/BLINK/output_dir
 
 SCRIPTS=/fs-computility/llmit_d/shared/baitianyi/vts_v/eval/BLINK/main.py
 
-USING_VTS=True
-USING_VERIFIER=True
+USING_VTS=False
+USING_VERIFIER=False
 TASK_NAME=Visual_Similarity
 
 python -u $SCRIPTS \

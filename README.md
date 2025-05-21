@@ -93,21 +93,58 @@ export DASHSCOPE_API_KEY=your-api-key-here
 export DASHSCOPE_MODEL="gpt-3.5-turbo"
 ```
 
+**Reasoner Model Type**: In our method, we support both closed-source model APIs and open-source models for reasoning tasks. To proceed:
+- First deploy the model following the instructions in [Step-1: Launch model deployment](#step-1-launch-model-deployment)
+- Then specify the reasoning model type via the `reasoner_type` parameter in the test script:
+    - For all closed-source model APIs, set `reasoner_type="gpt-4o"` (regardless of the actual API used)
+    - For all open-source models, set `reasoner_type="qwen-vl"` (regardless of the actual model deployed)
 
-#### Step2-1: Direct 
+Next, we will use BLINK as an example to demonstrate how to run the three different modes of our method using both GPT-4o and Qwen2.5VL respectively.The execution methods for other benchmarks (Vstar, MMStar, MathVista) are nearly identical to BLINK's and the implementation approaches for other models (Qwen2-VL and LLaMA3.2-Vision) closely mirror those of Qwen2.5VL.
 
 
-#### Step2-2: Using VTS Inference
+### GPT-4o
+
+For Direct mode, you can run the script [gpt_blink_direct.sh](./eval/BLINK/scripts/gpt_blink_direct.sh).
+
+You should configure your own GPT-4o API base URL and API key in the script.
+```bash
+## Set your own gpt-4o api base-url and api-key here
+export OPENAI_BASE_URL=https://api.openai.com/v1 # default value
+export OPENAI_API_KEY=your-openai-api-key-here
+```
+
+Then run the following command in the terminal:
+```bash
+cd eval/BLINK/scripts
+bash gpt_blink_direct.sh
+```
 
 
+For VTS mode, you can run the script [gpt_blink_vts.sh](./eval/BLINK/scripts/gpt_blink_vts.sh).
+```bash
+cd eval/BLINK/scripts
+bash gpt_blink_vts.sh
+```
 
+For VTS-V mode, you can run the script [gpt_blink_vts_v.sh](./eval/BLINK/scripts/gpt_blink_vts_v.sh).
 
-| Mode | using_vts | using_verifier | reasoner_model| dpo_model_path | ref_model_path|
-|------| --------- |----------------| --------------|----------------| ---------------|
-|Direct| False     |   False        | None          | None           | None           |
-|VTS   | True      | False          |
+In VTS-V mode, you need to specify the verifier model by setting:
+- `DPO_MODEL_PATH` to the DPO-trained Qwen2.5-VL-7B-Instruct model used in our method
+- `REF_MODEL_PATH` to the original Qwen2.5-VL-7B-Instruct model
+```bash
+# set dpo model path and ref model path
+DPO_MODEL_PATH=your_own_dpo_model_path_here
+REF_MODEL_PATH=your_own_ref_model_path_here
+```
 
-#### Step2-3: Using VTS-V inference
+Then run the following command in the terminal:
+```bash
+cd eval/BLINK/scripts
+bash gpt_blink_vts_v.sh
+```
+
+### Qwen2.5-VL-7B-Instruct
+
 
 
 ## Data Construction
