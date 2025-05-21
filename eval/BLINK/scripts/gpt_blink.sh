@@ -8,6 +8,11 @@ export DASHSCOPE_API_KEY=your_dashscope_api_key
 export DASHSCOPE_MODEL="qwen-max"
 
 
+## Set OpenAI API base-url and api-key here
+export OPENAI_BASE_URL=https://api.openai.com/v1 # default value
+export OPENAI_API_KEY=your-openai-api-key-here
+
+
 DPO_MODEL_PATH=your_model_path_here
 REF_MODEL_PATH=your_model_path_here
 
