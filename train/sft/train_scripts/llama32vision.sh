@@ -15,11 +15,11 @@ CUDA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
 
 LOG_FILE="$TRAIN_DIR/sft/scripts/llama_vision/log/training_$(date +%Y%m%d_%H%M%S).log"
 
-# 重定向所有输出（标准输出和错误输出）到日志文件
+# Redirect all output (standard output and error output) to the log file.
 exec > >(tee -a "$LOG_FILE") 2>&1
 
-echo "开始训练，日志保存到: $LOG_FILE"
-echo "执行时间: $(date)"
+echo "Start training, with logs saved to: $LOG_FILE"
+echo "Execution time: $(date)"
 
 
 ## TODO
@@ -30,13 +30,12 @@ MODEL_NAME_OR_PATH=your-own-model-name-or-path
 
 
 OUTPUT_DIR="$TRAIN_DIR/sft/LLaMA-Factory/saves/LLaMA_3_2_Vision_Instruct_11B/lora"
-
 LLAMAFACTORY_DATA_DIR=$TRAIN_DIR/sft/LLaMA-Factory/data
 DEEPSPEED_CONFIG_PATH=$TRAIN_DIR/sft/LLaMA-Factory/cache/ds_z3_config.json
 
 
 
-# 基本命令和参数
+# Basic commands and parameters
 CMD="llamafactory-cli train \
     --model_name_or_path $MODEL_NAME_OR_PATH \
     --trust_remote_code true \
@@ -76,47 +75,45 @@ CMD="llamafactory-cli train \
 
 
 
-# 查找有效的检查点
+# Locate valid checkpoints
 VALID_CHECKPOINT=""
 if [ -d "$OUTPUT_DIR" ]; then
-    # 获取所有checkpoint文件夹，按版本排序
+    # Retrieve all checkpoint folders and sort them by version
     CHECKPOINTS=($(find "$OUTPUT_DIR" -maxdepth 1 -type d -name "*checkpoint*" | sort -V))
     
-    # 从最新的检查点开始检查，找到第一个包含trainer_state.json的检查点
+    # Start checking from the latest checkpoint and find the first one that contains `trainer_state.json`
     for ((i=${#CHECKPOINTS[@]}-1; i>=0; i--)); do
         CHECKPOINT="${CHECKPOINTS[i]}"
         if [ -f "$CHECKPOINT/trainer_state.json" ]; then
             VALID_CHECKPOINT="$CHECKPOINT"
-            echo "找到有效的检查点: $VALID_CHECKPOINT"
+            echo "Valid checkpoint found: $VALID_CHECKPOINT"
             break
         else
-            echo "检查点 $CHECKPOINT 中没有找到 trainer_state.json，尝试上一个检查点"
+            echo "checkpoint $CHECKPOINT don't have trainer_state.json, Try the previous checkpoint."
         fi
     done
     
     if [ -z "$VALID_CHECKPOINT" ]; then
-        echo "未找到有效的检查点，将从头开始训练"
+        echo "No valid checkpoint found. Training will start from scratch."
     fi
 else
-    echo "输出目录不存在，将从头开始训练"
+    echo "The output directory does not exist. Training will start from scratch."
 fi
 
-# 开始训练模型
-echo "开始训练模型，使用命令行参数方式..."
+# start training
+echo "Start training the model using command-line parameters..."
 
 
-# 根据是否有有效检查点决定如何启动训练
+# Determine how to start training based on whether there is a valid checkpoint.
 if [ -n "$VALID_CHECKPOINT" ]; then
-    echo "将从有效检查点继续训练: $VALID_CHECKPOINT"
-    # 使用检查点继续训练
+    echo "Training will resume from the valid checkpoint.: $VALID_CHECKPOINT"
     $CMD --resume_from_checkpoint "$VALID_CHECKPOINT"
 else
-    echo "没有找到有效检查点，从头开始训练"
-    # 首次训练，不传递resume_from_checkpoint参数
+    echo "No valid checkpoint found. Training will start from scratch:"
     $CMD
 fi
 
-echo "训练任务已完成"
-echo "完成时间: $(date)"
+echo "The training task has been completed."
+echo "Completion time: $(date)"
 
 exit 0

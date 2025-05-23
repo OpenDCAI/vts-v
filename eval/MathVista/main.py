@@ -20,7 +20,9 @@ from src.prompts import load_vts_system_prompt, load_vts_has_verifier_system_pro
 from query_model import query_gpt4o, query_qwenvl
 from analyze_utils import qwen_llm_as_a_judge
 
-mathvista_path = "/fs-computility/llmit_d/shared/baitianyi/datasets_local/MathVista"
+
+# you can also set your own local path 
+mathvista_path = "AI4Math/MathVista"
 
 
 def test_benchmark(args):

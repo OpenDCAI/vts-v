@@ -76,7 +76,9 @@ def run_reasoner_with_timeout(args, reasoner, verifier, images, prompt, system_p
                 image_save_dir
             )
 
-vstar_path = "/fs-computility/llmit_d/shared/baitianyi/datasets_local/vstar_bench"
+
+# you can also set your local dataset path here
+vstar_path = "craigwu/vstar_bench"
 dataset = load_dataset(vstar_path)['test']
 
 dataset = dataset.select(range(5))

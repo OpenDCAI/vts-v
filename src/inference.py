@@ -518,9 +518,6 @@ def vts_reasoner_verifier(reasoner, verifier, image_path_list, task_prompt, syst
 
 	delta = torch.norm(current_reward - previous_reward, p=2)
 
-	# print(f"\nprevious_reward: {previous_reward}")
-	# print(f"current_reward: {current_reward}")
-	# print(f"delta: {delta}")
 
 	multi_turn = 0
 	
@@ -972,11 +969,6 @@ def vts_reasoner_verifier(reasoner, verifier, image_path_list, task_prompt, syst
 		previous_reward = current_reward
 		current_reward = dpo_log - ref_log
 		delta = torch.norm(current_reward - previous_reward, p=2)
-
-		# print(f"current_reward: {current_reward}")
-		# print(f"previous_reward: {previous_reward}")
-		# print(f"verifier_threshold: {verifier.threshold}")
-		# print(f"delta: {delta}")
 
 		if delta < verifier.threshold:
 			message_list[-1]["content"].append(

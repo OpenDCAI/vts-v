@@ -8,13 +8,13 @@ import argparse
 
 def extract_image_indices(text):
     """
-    从文本中提取所有Image Index及其关联文本
-    支持以下格式：
+    Extract all Image Indexes and their associated text from the document.
+    Supported formats include:
     1. "Here's...Image Index: 1\n"
     2. "Image Index: 0\n"
     3. "Image Index: 12\nHere's the image marked...\nPay attention.\n"
     
-    返回: list of (index, associated_text)
+    return: list of (index, associated_text)
     """
     results = []
     lines = text.split('\n')
@@ -23,12 +23,12 @@ def extract_image_indices(text):
     while i < len(lines):
         line = lines[i]
         if "Image Index:" in line:
-            # 提取索引值
+            # Extract the index values.
             try:
                 idx_str = line.split("Image Index:")[1].strip().split()[0]
                 index = int(idx_str)
                 
-                # 收集关联文本（当前行+后续非Image Index行）
+                # Collect the associated text (current line + subsequent lines that are not Image Index lines).
                 associated_lines = [line]
                 j = i + 1
                 while j < len(lines) and "Image Index:" not in lines[j]:
@@ -37,7 +37,7 @@ def extract_image_indices(text):
                 
                 associated_text = '\n'.join(associated_lines)
                 results.append((index, associated_text))
-                i = j  # 跳过已处理的行
+                i = j  # Skip the lines that have already been processed
             except (ValueError, IndexError):
                 i += 1
         else:
@@ -68,14 +68,14 @@ def transform_entry(original_entry: Dict[str, Any]) -> Dict[str, Any]:
         "rejected": []
     }
 
-    # 获取所有图像路径
+    # Retrieve all image paths
     chosen_image_paths = original_entry.get("chosen", {}).get("images_saved_paths", [])
 
-    # 设置prompt图像路径（原始图像）
+    # Set the prompt image path (original image).
     if chosen_image_paths:
         transformed["prompt_image_path"].append(chosen_image_paths[0])
 
-    # 构建prompt部分 - 保持原样
+    # Construct the prompt section - keep it as-is.
     system_prompt = {
         "role": "system",
         "content": [{
@@ -84,17 +84,17 @@ def transform_entry(original_entry: Dict[str, Any]) -> Dict[str, Any]:
         }]
     }
     
-    # 用户prompt部分 - 保持原样
+    # user prompt
     user_prompt_content = []
     conversation = original_entry.get("conversation", [])
     if conversation and conversation[0]["from"] == "human":
         user_value = conversation[0]["value"]
-        # 检查是否有图像标记
+        # Check if there is an image marker.
         if "<image>" in user_value:
             user_prompt_content.append({
                 "type": "image"
             })
-            # 移除图像标记，保留剩余文本
+            # Remove the image marker and retain the remaining text.
             text_content = user_value.replace("<image>", "").strip()
             if text_content:
                 user_prompt_content.append({
@@ -216,13 +216,13 @@ def process_all_datasets(root_dir: str, output_dir: str):
     root_path = Path(root_dir)
     output_path = Path(output_dir)
     
-    # 确保输出目录存在
+    # Ensure that the output directory exists.
     output_path.mkdir(parents=True, exist_ok=True)
     
     existing_data = []
     existing_ids = set()
     
-    # 检查是否有合并的主输出文件
+    # Check if there is a merged main output file.
     main_output_file = output_path / "llavaov_dpo_train_merged.json"
     if main_output_file.exists():
         try:
@@ -239,14 +239,14 @@ def process_all_datasets(root_dir: str, output_dir: str):
     
     for subdir in tqdm(root_path.iterdir()):
         if subdir.is_dir():
-            # 为每个子目录创建对应的输出目录
+            # Create corresponding output directories for each subdirectory.
             subdir_output_dir = output_path / subdir.name
             subdir_output_dir.mkdir(exist_ok=True)
             
             subdir_transformed_data = []
             subdir_existing_ids = set()
             
-            # 检查子目录是否已有输出文件
+            # Check if there are already output files in the subdirectory.
             subdir_output_file = subdir_output_dir / f"{subdir.name}_processed.json"
             if subdir_output_file.exists():
                 try:
@@ -258,7 +258,7 @@ def process_all_datasets(root_dir: str, output_dir: str):
                 except Exception as e:
                     print(f"Warning: Could not load existing output file for {subdir.name}: {str(e)}")
             
-            # 处理子目录中的文件
+            # Process the files in the subdirectory.
             subdir_processed_files = 0
             subdir_new_entries = 0
             
@@ -272,7 +272,7 @@ def process_all_datasets(root_dir: str, output_dir: str):
                     
                     for entry in tqdm(data, desc=f"Processing {input_file.name}"):
                         try:
-                            ## is_correct 和 bulid_preference_data在原本的数据里面
+                            ## `is_correct` and `build_preference_data` are in the original data.
                             identifier = entry["source"] + entry["id"]
                             is_correct = entry.get("is_correct", False)
                             build_preference_success = entry.get("build_preference_data", False)
@@ -302,13 +302,13 @@ def process_all_datasets(root_dir: str, output_dir: str):
                     print(f"Error processing file {input_file}: {str(e)}")
                     continue
             
-            # 保存子目录处理结果
+            # Save the processing results for the subdirectory.
             if subdir_transformed_data:
                 with open(subdir_output_file, 'w', encoding='utf-8') as f:
                     json.dump(subdir_transformed_data, f, indent=4, ensure_ascii=False)
                 print(f"Saved {len(subdir_transformed_data)} entries for {subdir.name} to {subdir_output_file}")
     
-    ## 转化为trl支持的格式：
+    ## Convert to the format supported by TRL:
 
         
     converted_dataset = []
@@ -324,7 +324,7 @@ def process_all_datasets(root_dir: str, output_dir: str):
         }
         converted_dataset.append(converted_data)
 
-    # 保存合并的主输出文件
+    # Save the merged main output file.
     if converted_dataset:
         with open(main_output_file, 'w', encoding='utf-8') as f:
             json.dump(converted_dataset, f, indent=4, ensure_ascii=False)

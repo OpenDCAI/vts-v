@@ -86,9 +86,7 @@ if __name__ == "__main__":
     )
     processor.tokenizer.padding_side = 'left'
     tokenizer = processor.tokenizer
-    # tokenizer.padding_side = 'left'
-    # print("==========================hzj, tokenizer,padding_side= ", tokenizer.padding_side)
-
+    
     # Set up the chat template
     if model.config.model_type == "idefics2":
         pass  # the processor already has a valid chat template

@@ -7,26 +7,27 @@ export DASHSCOPE_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
 export DASHSCOPE_API_KEY=sk-573b81427b2a4ee4b18931a44139a8b8
 export DASHSCOPE_MODEL="qwen-max"
 
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+VSTAR_DIR=$(dirname "$SCRIPT_DIR")
 
 
 
-REASONER_MODEL_PATH="/fs-computility/llmit_d/shared/baitianyi/vts/train/dpo/model/Qwen2-VL-7B-Instruct"
-
-REASONER_PORT=28080
-
-
-DPO_MODEL_PATH="/fs-computility/llmit_d/shared/baitianyi/vts/train/dpo/output_dirs/internvl8b_dpo_301k_trl_8machines_v2/checkpoint-12225"
-
-REF_MODEL_PATH="/fs-computility/llmit_d/shared/baitianyi/vts/train/dpo/model/Qwen2.5-VL-7B-Instruct"
+MODEL_PATH=your-own-path
+MODEL_PORT=28080
 
 
-OUTPUT_DIR="/fs-computility/llmit_d/shared/baitianyi/vts_v/eval/Vstar/output_dirs/test_code_qwen2vl_original"
+DPO_MODEL_PATH=your-own-path
+
+REF_MODEL_PATH=your-own-path
+
+
+OUTPUT_DIR="$VSTAR_DIR/output_dirs/"
 
 
 
-SCRIPTS=/fs-computility/llmit_d/shared/baitianyi/vts_v/eval/Vstar/main.py
+SCRIPTS=$VSTAR_DIR/main.py
 
-USING_VTS=True
+USING_VTS=False
 USING_VERIFIER=False
 TASK_NAME=None
 
@@ -34,8 +35,8 @@ python -u $SCRIPTS \
     --task_name $TASK_NAME \
     --using_vts $USING_VTS \
     --reasoner_type qwen-vl \
-    --reasoner_model_path $REASONER_MODEL_PATH \
-    --reasoner_port $REASONER_PORT \
+    --reasoner_model_path $MODEL_PATH \
+    --reasoner_port $MODEL_PORT \
     --using_verifier $USING_VERIFIER \
     --dpo_model_type qwen-vl \
     --dpo_model_name_or_path $DPO_MODEL_PATH \

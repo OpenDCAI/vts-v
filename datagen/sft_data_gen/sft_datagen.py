@@ -111,7 +111,7 @@ def transform_to_llama_factory_sft_format(original_entry: Dict[str, Any]) -> Dic
 
 
 def process_task_chunk(task_dirs_chunk, output_dir, model_name, model_port, worker_id=0, num_workers=1):
-    """处理一个任务分片"""
+    """Process a task shard."""
     chunk_output = []
     processed_count = 0
 
@@ -119,8 +119,7 @@ def process_task_chunk(task_dirs_chunk, output_dir, model_name, model_port, work
     
     output_filepath = os.path.join(output_dir, output_filename)
     
-    # 为每个worker创建独立的进度条
-    # pbar = tqdm(task_dirs_chunk, desc=f"Worker {worker_id}" if worker_id else "Worker", position=worker_id if worker_id else 0)
+    # Create a separate progress bar for each worker.
     position = int(worker_id) if worker_id else 0   
     pbar = tqdm(task_dirs_chunk, desc=f"Worker {worker_id}" if worker_id else "Worker", position=position)
     

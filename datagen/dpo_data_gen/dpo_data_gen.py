@@ -329,8 +329,8 @@ if __name__ == "__main__":
     # Set up argument parser
     parser = argparse.ArgumentParser(description="Process visual task datasets for DPO data generation.")
     parser.add_argument("--task", type=str, required=True, help="Name of the task to process or 'all1-4'")
-    parser.add_argument("--input_dir", type=str, default="/fs-computility/llmit_d/shared/baitianyi/vts/datagen/outputs_dir/outputs1", help="Base directory containing task folders")
-    parser.add_argument("--output_dir", type=str, default="/fs-computility/llmit_d/shared/baitianyi/vts/datagen/dpo_data_gen/output_dis", help="Base directory to save processed outputs")
+    parser.add_argument("--input_dir", type=str, help="Base directory containing task folders")
+    parser.add_argument("--output_dir", type=str, help="Base directory to save processed outputs")
     parser.add_argument("--reasoner_type", type=str, default="qwen-vl", help="Type of reasoner to use")
     parser.add_argument("--reasoner_model_path", type=str, default="none", help="Path to reasoner model")
     parser.add_argument("--reasoner_port", type=int, default=28080, help="Port for Qwen-VL service")

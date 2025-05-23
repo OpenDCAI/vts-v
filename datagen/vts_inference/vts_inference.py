@@ -19,8 +19,8 @@ from src.reasoner import Reasoner
 
 
 
-
-DATASETS_NAME = "/fs-computility/llmit_d/shared/baitianyi/datasets_local/llavaov"
+# You can set your local path for LLaVa-OneVision-Data dataset
+DATASETS_NAME = "lmms-lab/LLaVA-OneVision-Data"
 
 
 # Set the random seed for sampling to ensure consistent data retrieval across each sampling iteration.
@@ -28,11 +28,11 @@ random.seed(42)
 np.random.seed(42)
 
 def get_sampled_indices(dataset_size, sample_ratio=0.3):
-    """获取随机采样的索引，保证可重现"""
+    """Obtain randomly sampled indices with reproducibility."""
     all_indices = list(range(dataset_size))
     random.shuffle(all_indices)
     sample_size = int(dataset_size * sample_ratio)
-    return sorted(all_indices[:sample_size])  # 排序以便于调试
+    return sorted(all_indices[:sample_size])  # Sort for easier debugging.
 
 
 def safe_slugify(text):

@@ -76,7 +76,8 @@ def run_reasoner_with_timeout(args, reasoner, verifier, images, prompt, system_p
                 image_save_dir
             )
 
-MMStar_data_path = "/fs-computility/llmit_d/shared/baitianyi/datasets_local/MMStar"
+# you can also set your local dataset path here
+MMStar_data_path = "Lin-Chen/MMStar"
 
 def load_existing_results(result_save_dir):
     """Load existing results if they exist"""

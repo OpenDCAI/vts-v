@@ -1,9 +1,0 @@
-Error processing data id cauldron/figureqa/images/figureqa_00000328.png: Reasoning failed for question: Is Firebrick the minimum?
-Answer the question with Yes or No.
-Traceback (most recent call last):
-  File "/fs-computility/llmit_d/shared/baitianyi/vts_v/datagen/vts_inference/vts_inference.py", line 135, in process_task
-    raise NoAnswerReachedError(
-NoAnswerReachedError: Reasoning failed for question: Is Firebrick the minimum?
-Answer the question with Yes or No.
-
-

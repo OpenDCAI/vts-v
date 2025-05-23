@@ -380,15 +380,15 @@ class TerminateStep(BaseModel):
 ################################################################
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-detector_id = "/fs-computility/llmit_d/shared/baitianyi/model/grounding-dino-base"
+detector_id = "IDEA-Research/grounding-dino-base"
 object_detector = pipeline(model=detector_id, task="zero-shot-object-detection", device=device)
 
-depth_processor = AutoImageProcessor.from_pretrained("/fs-computility/llmit_d/shared/baitianyi/model/Depth-Anything-V2-Large-hf")
-depth_model = AutoModelForDepthEstimation.from_pretrained("/fs-computility/llmit_d/shared/baitianyi/model/Depth-Anything-V2-Large-hf").to(device='cuda')  
+depth_processor = AutoImageProcessor.from_pretrained("depth-anything/Depth-Anything-V2-Large-hf")
+depth_model = AutoModelForDepthEstimation.from_pretrained("depth-anything/Depth-Anything-V2-Large-hf").to(device='cuda')  
 depth_model.eval()
 
-sam_model = SamModel.from_pretrained("/fs-computility/llmit_d/shared/baitianyi/model/sam-vit-large").to(device='cuda')
-sam_processor = SamProcessor.from_pretrained("/fs-computility/llmit_d/shared/baitianyi/model/sam-vit-large")
+sam_model = SamModel.from_pretrained("facebook/sam-vit-large").to(device='cuda')
+sam_processor = SamProcessor.from_pretrained("facebook/sam-vit-large")
 sam_model.eval()
 
 # colors for visualization
@@ -483,8 +483,8 @@ def segment_image(
 
 import easyocr
 EASYOCR_READER = None
-def init_easyocr(model_storage_dir: str = "/fs-computility/llmit_d/shared/baitianyi/model/local_easyocr_models"):
-    """初始化EasyOCR并预加载模型"""
+def init_easyocr(model_storage_dir: str = "./local_easyocr_models"):
+    """Initialize EasyOCR and pre-load the model."""
     global EASYOCR_READER
     if EASYOCR_READER is None:
         if model_storage_dir:
@@ -627,7 +627,7 @@ def calculate_text_to_images_similarity(
     image_inputs = torch.stack([open_clip_preprocess(img).to(device) for img in images])
     
     # Calculate features
-    with torch.no_grad(), torch.amp.autocast(device_type='cuda', dtype=torch.float16):  # 修改这里
+    with torch.no_grad(), torch.amp.autocast(device_type='cuda', dtype=torch.float16):
         text_features = open_clip_model.encode_text(text_input)
         image_features = open_clip_model.encode_image(image_inputs)
         
@@ -659,7 +659,7 @@ def calculate_image_to_texts_similarity(
     text_inputs = open_clip_tokenizer(texts).to(device)
     
     # Calculate features
-    with torch.no_grad(), torch.amp.autocast(device_type='cuda', dtype=torch.float16):  # 修改这里
+    with torch.no_grad(), torch.amp.autocast(device_type='cuda', dtype=torch.float16):
         image_features = open_clip_model.encode_image(image_input)
         text_features = open_clip_model.encode_text(text_inputs)
         
@@ -694,7 +694,7 @@ def calculate_image_to_images_similarity(
     other_images = torch.stack([open_clip_preprocess(img).to(device) for img in other_images])
     
     # Calculate features
-    with torch.no_grad(), torch.amp.autocast(device_type='cuda', dtype=torch.float16):  # 修改这里
+    with torch.no_grad(), torch.amp.autocast(device_type='cuda', dtype=torch.float16):  
         ref_features = open_clip_model.encode_image(ref_image)
         other_features = open_clip_model.encode_image(other_images)
         
@@ -774,49 +774,49 @@ def zoom_in_image_by_bbox(
     Returns:
         List containing the zoomed-in image (or empty list if failed)
     """
-    # 1. 获取原图尺寸和边界框参数
+    # Obtain the original image dimensions and bounding box parameters.
     orig_width, orig_height = image.size
     x_min, y_min = bounding_box['x_min'], bounding_box['y_min']
     x_max, y_max = bounding_box['x_max'], bounding_box['y_max']
     
-    # 2. 计算边界框原始尺寸
+    # Calculate the original dimensions of the bounding box.
     box_width = x_max - x_min
     box_height = y_max - y_min
     
-    # 3. 应用padding（基于边界框尺寸的比例）
+    # Apply padding (proportional to the bounding box dimensions).
     padding_x = padding * box_width
     padding_y = padding * box_height
     
-    # 4. 计算带padding的裁剪区域（确保不超出图像边界）
+    # Calculate the cropping area with padding (ensuring it does not exceed the image boundaries).
     crop_x_min = max(0, x_min - padding_x)
     crop_y_min = max(0, y_min - padding_y)
     crop_x_max = min(orig_width, x_max + padding_x)
     crop_y_max = min(orig_height, y_max + padding_y)
     
-    # 5. 确保最小缩放比例（至少占原图的10%）
+    # Ensure a minimum scaling ratio (at least 10% of the original image).
     min_width = orig_width * min_zoom_ratio
     min_height = orig_height * min_zoom_ratio
     
     if (crop_x_max - crop_x_min) < min_width:
-        # 调整宽度到最小尺寸（保持中心点不变）
+        # Adjust the width to the minimum size (keeping the center point unchanged).
         center_x = (crop_x_min + crop_x_max) / 2
         crop_x_min = max(0, center_x - min_width/2)
         crop_x_max = min(orig_width, center_x + min_width/2)
     
     if (crop_y_max - crop_y_min) < min_height:
-        # 调整高度到最小尺寸（保持中心点不变）
+        # Adjust the height to the minimum size (keeping the center point unchanged).
         center_y = (crop_y_min + crop_y_max) / 2
         crop_y_min = max(0, center_y - min_height/2)
         crop_y_max = min(orig_height, center_y + min_height/2)
     
-    # 6. 执行裁剪
+    # crop
     try:
         cropped = image.crop((crop_x_min, crop_y_min, crop_x_max, crop_y_max))
     except Exception as e:
         print(f"Zoom in failed: {str(e)}")
         return []
     
-    # 7. 保持原始宽高比的情况下放大到原图尺寸
+    # Scale up to the original image dimensions while maintaining the original aspect ratio.
     zoomed = cropped.resize((orig_width, orig_height), Image.Resampling.LANCZOS)
     
     return [zoomed]
