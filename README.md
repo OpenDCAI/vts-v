@@ -1,6 +1,6 @@
 # VTS-V: Multi-step Visual Reasoning with Visual Tokens Scaling and Verification
 
-This repository is the official implementation of [Multi-step Visual Reasoning with Visual Tokens Scaling and Verification]
+This repository is the official implementation of [Multi-step Visual Reasoning with Visual Tokens Scaling and Verification](https://arxiv.org/abs/2506.07235)
 
 # Introduction
 
@@ -197,3 +197,18 @@ In our work, we constructed a 315K SFT dataset and a 301K DPO dataset by samplin
 # Training
 
 In this work, we conducted supervised fine-tuning (SFT) using our custom-built VTS-SFT dataset on three models: [Qwen2.5VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct), [Qwen2VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct), and [LLaMA-3.2-11B-Vision-Instruct](https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct). Additionally, we performed DPO training on [Qwen2.5VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) using our constructed VTS-DPO dataset. For detailed methodology, please refer to [train/README.md](./train/README.md):
+
+# Citation
+
+```
+@article{bai2025vtsv,
+    title={Multi-Step Visual Reasoning with Visual Tokens Scaling and Verification},
+    author={Bai, Tianyi and Hu, Zengjie and Sun, Fupeng and Qiu, Jiantao and Jiang, Yizhen and He, Guangxin and Zeng, Bohan and He, Conghui and Yuan, Binhang and Zhang, Wentao},
+    journal={arXiv preprint arXiv:2506.07235},
+    year={2025},
+    url={https://arxiv.org/abs/2506.07235},
+    archivePrefix={arXiv},
+    eprint={2506.07235},
+    primaryClass={cs.CV},
+}
+```
