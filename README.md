@@ -1,7 +1,8 @@
 # VTS-V: Multi-step Visual Reasoning with Visual Tokens Scaling and Verification
 
-This repository is the official implementation of [Multi-step Visual Reasoning with Visual Tokens Scaling and Verification](https://arxiv.org/abs/2506.07235)
+This repository is the official implementation of [Multi-step Visual Reasoning with Visual Tokens Scaling and Verification](https://arxiv.org/abs/2506.07235).
 
+Our paper's homepage is at: [https://vts-v.github.io/](https://vts-v.github.io/)
 # Introduction
 
 <img src="./asset/main.png" alt="main"/>
