@@ -30,6 +30,7 @@ def merge_and_filter(input_dir, output_dir):
                 if identifier not in seen_ids and is_correct and image_placeholders_equal and images_or_messages_not_empty and imagepaths_exist and not only_one_step:
                     merged_data.append(data["sft_train_data"])
                     seen_ids.add(identifier)
+    os.makedirs(output_dir, exist_ok=True)
     output_file_path = os.path.join(output_dir, "llavaov_sft_train.json")
     print(f"Total Count: {len(merged_data)}")
     with open(output_file_path, "w") as f:

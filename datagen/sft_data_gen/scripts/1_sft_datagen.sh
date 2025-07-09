@@ -4,7 +4,7 @@
 
 # set your own model path and port here
 MODEL_PATH=your-model-path-here
-MODEL_PROT=28080
+MODEL_PORT=28080
 
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -54,7 +54,7 @@ python $SCRIPTS \
     --input_dir $INPUT_DIR \
     --output_dir $OUTPUT_DIR \
     --model_name $MODEL_PATH \
-    --model_port $MODEL_PROT \
+    --model_port $MODEL_PORT \
     --worker_id 0 \
     --num_workers 1 &
 WORKER_PIDS+=($!)

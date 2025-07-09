@@ -115,8 +115,8 @@ def process_task_chunk(task_dirs_chunk, output_dir, model_name, model_port, work
     chunk_output = []
     processed_count = 0
 
+    os.makedirs(output_dir, exist_ok=True)
     output_filename = f"{worker_id}_{num_workers}.json"
-    
     output_filepath = os.path.join(output_dir, output_filename)
     
     # Create a separate progress bar for each worker.
