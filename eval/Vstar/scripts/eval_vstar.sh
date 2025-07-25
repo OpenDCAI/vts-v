@@ -4,7 +4,7 @@
 
 # default 
 export DASHSCOPE_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
-export DASHSCOPE_API_KEY=sk-573b81427b2a4ee4b18931a44139a8b8
+export DASHSCOPE_API_KEY=your-own-key
 export DASHSCOPE_MODEL="qwen-max"
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
