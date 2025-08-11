@@ -3,6 +3,9 @@
 This repository is the official implementation of [Multi-step Visual Reasoning with Visual Tokens Scaling and Verification](https://arxiv.org/abs/2506.07235).
 
 Our paper's homepage is at: [https://vts-v.github.io/](https://vts-v.github.io/)
+
+Our datasets and models are open-sourced at [HuggingFace](https://huggingface.co/vtsvnips2025)
+
 # Introduction
 
 <img src="./asset/main.png" alt="main"/>
@@ -100,7 +103,7 @@ export DASHSCOPE_MODEL="gpt-3.5-turbo"
     - For all closed-source model APIs, set `reasoner_type="gpt-4o"` (regardless of the actual API used)
     - For all open-source models, set `reasoner_type="qwen-vl"` (regardless of the actual model deployed)
 
-Next, we will use BLINK as an example to demonstrate how to run the three different modes of our method using both GPT-4o and Qwen2.5VL respectively.The execution methods for other benchmarks (Vstar, MMStar, MathVista) are nearly identical to BLINK's and the implementation approaches for other models (Qwen2-VL and LLaMA3.2-Vision) closely mirror those of Qwen2.5VL.
+Next, we will use BLINK as an example to demonstrate how to run the three different modes of our method using both GPT-4o and Qwen2.5VL respectively. The execution methods for other benchmarks (Vstar, MMStar, MathVista) are nearly identical to BLINK's and the implementation approaches for other models (Qwen2-VL and LLaMA3.2-Vision) closely mirror those of Qwen2.5VL.
 
 
 ### GPT-4o
